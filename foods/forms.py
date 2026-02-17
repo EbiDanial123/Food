@@ -14,7 +14,24 @@ class FoodForm(forms.ModelForm):
 class customizeoptionform(forms.ModelForm):
     class Meta:
         model=customizeoption
-        fields=['food_type','size','base','topping','sauce']  
+        fields=['food_type','size','base','topping','sauce'] 
+        
+        widgets = {
+            'topping': forms.CheckboxSelectMultiple(),
+            
+        }
+        
+from foods.models import Sizechart, Basetype, Sauce, Toppings
+class CustomizeForm(forms.Form):
+    size = forms.ModelChoiceField(queryset=Sizechart.objects.all())
+    base = forms.ModelChoiceField(queryset=Basetype.objects.all())
+    sauce = forms.ModelChoiceField(queryset=Sauce.objects.all())
+    topping = forms.ModelMultipleChoiceField(
+        queryset=Toppings.objects.none(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
+
         
 class cartform(forms.ModelForm): 
     class Meta:

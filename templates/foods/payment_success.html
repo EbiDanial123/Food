@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+/* Container */
+.container {
+    max-width: 550px;
+    margin: 50px auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Card styling */
+.card {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    padding: 40px 30px;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.15);
+}
+
+/* Heading */
+.card h3 {
+    font-weight: 700;
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+    color: #6c63ff;
+}
+
+/* Order details */
+.card p {
+    font-size: 16px;
+    margin: 10px 0;
+    color: var(--bs-body-color);
+
+}
+.card p strong {
+    font-weight: 700;
+    color: var(--bs-body-color);
+}
+
+/* Total Paid highlight */
+.total-paid {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-top: 20px;
+    color: #28a745;
+}
+
+/* Place Order button */
+.card a {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 14px 30px;
+    background-color: #6c63ff;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+}
+.card a:hover {
+    background-color: #574fd6;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Divider line */
+.card hr {
+    border-top: 1px solid #ddd;
+    margin: 25px 0;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .card {
+        background-color: #1e1e1e;
+        color: #eee;
+    }
+    .card hr {
+        border-top: 1px solid #444;
+    }
+    .card a {
+        background-color: #6c63ff;
+    }
+}
+</style>
+
+<div class="container">
+    <div class="card">
+        <h3>Order Summary 📝</h3>
+        <hr>
+        <p><strong>Order ID:</strong> {{ order.order_id }}</p>
+        <p><strong>Payment Method:</strong> {{ order.payment_method }}</p>
+        <p class="total-paid"><strong>Total Paid:</strong> ₹ {{ order.total_price }}</p>
+        <a href="{% url 'final_thankyou' order.id %}">Confirm & Place Order ✅</a>
+    </div>
+</div>
+{% endblock %}

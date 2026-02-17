@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+/* Center card */
+.container {
+    max-width: 600px;
+    margin: 80px auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    border-radius: 20px;
+    padding: 50px 30px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    position: relative;
+}
+
+/* Heading */
+.card h2 {
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: 25px;
+}
+
+/* Button */
+.card a.btn {
+    padding: 14px 30px;
+    font-size: 16px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+    .card {
+        background-color: #1e1e1e;
+        color: #eee;
+    }
+}
+</style>
+
+<div class="container">
+    <div class="card" id="thankYouCard">
+        <h2 class="text-success">Thank You for Your Order 🙏</h2>
+        <div class="mt-4">
+            <a href="{% url 'Allfoods' %}" class="btn btn-primary">
+                Continue Shopping
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Confetti library -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<script>
+// Fire confetti burst when page loads
+document.addEventListener("DOMContentLoaded", () => {
+    const duration = 2000; // 2 seconds
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 999 };
+
+    const interval = setInterval(() => {
+        const timeLeft = animationEnd - Date.now();
+        if (timeLeft <= 0) return clearInterval(interval);
+
+        const particleCount = 50 * (timeLeft / duration);
+        // random bursts from left, center, right
+        confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
+    }, 250);
+});
+</script>
+{% endblock %}

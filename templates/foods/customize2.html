@@ -1,60 +1,101 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-4">
-    <div class="card">
-        <div class="card-header text-center">
-            <h4>Customize food</h4>
-        </div>
+<style>
+/* Form container */
+form {
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 25px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-        <div class="card-body">
-            <h5 class="text-center">{{ food.name }}</h5>
+/* Labels */
+form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
 
-            {% if food.foodpic %}
-            <div class="text-center mb-3">
-                <img src="{{ food.foodpic.url }}"
-                     class="img-fluid rounded"
-                     style="max-height: 200px;">
-            </div>
-            {% endif %}
+/* Inputs / selects / textareas */
+form input[type="text"],
+form input[type="hidden"],
+form select,
+form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
 
-            <form method="post" action="{% url 'add_cart'%}">
-                {% csrf_token %}
+form input[type="text"]:focus,
+form select:focus,
+form textarea:focus {
+    border-color: #6c63ff;
+    box-shadow: 0 0 5px rgba(108, 99, 255, 0.3);
+    outline: none;
+}
 
-                <div class="form-group">
-                    <label>Food Type</label>
-                    {{ form.food_type }}
-                </div>
+/* Button */
+form button {
+    background-color: #6c63ff;
+    color: #fff;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
 
-                <div class="form-group">
-                    <label>Size</label>
-                    {{ form.size }}
-                </div>
+form button:hover {
+    background-color: #574fd6;
+    transform: translateY(-2px);
+}
 
-                <div class="form-group">
-                    <label>Base</label>
-                    {{ form.base }}
-                </div>
+/* Form groups spacing */
+.form-group {
+    margin-bottom: 18px;
+}
+</style>
 
-                <div class="form-group">
-                    <label>Sauce</label>
-                    {{ form.sauce }}
-                </div>
 
-                <div class="form-group">
-                    <label>Toppings</label>
-                    {{ form.topping }}
-                </div>
+<form method="post">
+    {% csrf_token %}
 
-                <button type="submit" class="btn btn-secondary mt-3">
-                    Add to Cart
-                </button>
-            </form>
+    <input type="hidden" name="food_id" value="{{ food.id }}">
 
-            <a href="{% url 'Allfoods' %}" class="btn btn-primary mt-3">
-                Back to Foods
-            </a>
-        </div>
+    <div class="form-group">
+        <label>Size</label>
+        {{ form.size }}
     </div>
-</div>
+
+    <div class="form-group">
+        <label>Base</label>
+        {{ form.base }}
+    </div>
+
+    <div class="form-group">
+        <label>Sauce</label>
+        {{ form.sauce }}
+    </div>
+
+    <div class="form-group">
+        <label>Toppings</label>
+        {{ form.topping }}
+    </div>
+
+    <button type="submit" class="btn btn-secondary mt-3">
+        Add to Cart
+    </button>
+</form>
+
+
 {% endblock %}

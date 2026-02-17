@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from foods.models import FoodItems,customizeoption,Cart,Order,OrderItem
-from foods.forms import FoodForm,customizeoptionform
+from foods.models import FoodItems,customizeoption,Cart,Order,OrderItem,Toppings
+from foods.forms import FoodForm,customizeoptionform,CustomizeForm
 # Create your views here.
 def food_details(request,id):
     fooditems=FoodItems.objects.get(id = id)
@@ -16,15 +16,51 @@ def category_foods(request, category):
         'category': category,
     }
     return render(request, 'foods/category.html', context)
- 
 def customize(request, id):
-    food = customizeoption.objects.get(id=id)
-    form=customizeoptionform()
-    context={
-        'food':food,
-        'form':form
-    }
-    return render(request, 'foods/customize2.html',context)
+    food = get_object_or_404(FoodItems, id=id)
+
+    if request.method == "POST":
+        form = CustomizeForm(request.POST)
+        form.fields['topping'].queryset = Toppings.objects.filter(
+            category=food.Categories
+        )
+
+        if form.is_valid():
+            size = form.cleaned_data['size']
+            base = form.cleaned_data['base']
+            sauce = form.cleaned_data['sauce']
+            toppings = form.cleaned_data['topping']
+
+            base_price = food.price
+            size_price = size.price
+            sauce_price = sauce.price
+            topping_total = sum(t.price for t in toppings)
+
+            final_price = base_price + size_price + sauce_price + topping_total
+
+            Cart.objects.create(
+                user=request.user,
+                name=food.name,
+                price=final_price,
+                quantity=1,
+                food_img=food.foodpic
+            )
+
+            return redirect('cart')   # 🔥 THIS MUST EXIST
+
+        else:
+            print(form.errors)
+
+    else:
+        form = CustomizeForm()
+        form.fields['topping'].queryset = Toppings.objects.filter(
+            category=food.Categories
+        )
+
+    return render(request, 'foods/customize2.html', {
+        'form': form,
+        'food': food
+    })
 
 def addfood(request):
     if request.method=='POST':
@@ -102,47 +138,70 @@ def cart(request):
         'total_price': total_price
     })
 
+from django.shortcuts import redirect, render, get_object_or_404
+from .models import Order, OrderItem, Cart
+
+from django.shortcuts import redirect
 
 def place_order(request):
-    # if request.method == "POST":
-    thing=Order.objects.all()
-    foods=OrderItem.objects.all()
-    return render(request,'foods/orderdetails.html',{'foods':foods,'thing':thing})
+    if request.method == "POST":
+        cart_items = Cart.objects.filter(user=request.user)
 
-        # user = UserDetails.objects.get(id=request.session['user_id'])
+        if not cart_items.exists():
+            return redirect('cart')
 
-        # cart_items = Cart.objects.filter(user=user)
+        total_price = sum(item.price * item.quantity for item in cart_items)
 
-        # if not cart_items:
-        #     return redirect('Allfoods')
+        order = Order.objects.create(
+            user=request.user,
+            total_price=total_price
+        )
 
-        # total = sum(item.price * item.quantity for item in cart_items)
+        for item in cart_items:
+            OrderItem.objects.create(
+                order=order,
+                food_name=item.name,
+                price=item.price,
+                quantity=item.quantity,
+                food_img=item.food_img
+            )
 
-        # Create Order
-        # order = Order.objects.create(
-        #     # user=user,
-        #     total_price=total
-        # )
+        cart_items.delete()
 
-        # Move items into OrderItem
-        # for item in cart_items:
-        #     OrderItem.objects.create(
-        #         order=order,
-        #         food_name=item.name,
-        #         price=item.price,
-        #         quantity=item.quantity,
-        #         food_img=item.food_img
-        #     )
+        # ✅ Redirect to payment page
+        return redirect('payment_page', order_id=order.id)
+from django.shortcuts import render, get_object_or_404
 
-        # # Clear Cart
-        # cart_items.delete()
+def payment_page(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    items = order.items.all()
 
-        # return redirect('order_details', order_id=order.order_id)
-    
-# def order_details(request, order_id):
-#     order = get_object_or_404(Order, order_id=order_id)
 
-#     return render(request, 'foods/orderdetails.html', {
-#         'order': order,
-#         'items': order.items.all()
-#     })
+    return render(request, 'foods/orderdetails.html', {
+        'order': order,
+        'thing': items
+    })
+
+def payment_options(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+
+    if request.method == "POST":
+        method = request.POST.get('payment_method')
+
+        order.payment_method = method
+        order.payment_status = "Paid"  # Dummy success
+        order.save()
+
+        return redirect('payment_success', order_id=order.id)
+
+    return render(request, 'foods/payment_options.html', {'order': order})
+
+
+
+def payment_success(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    return render(request, 'foods/payment_success.html', {'order': order})
+
+def final_thankyou(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    return render(request, 'foods/thank_you.html', {'order': order})

@@ -2,55 +2,170 @@
 {% load static %}
 
 {% block content %}
+<style>
+/* Container */
+.container {
+    max-width: 700px;
+    margin: 50px auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-<div class="container mt-5">
+/* Main card */
+.card {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    border-radius: 20px;
+    padding: 40px 30px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 25px 45px rgba(0,0,0,0.15);
+}
 
-    <div class="card shadow p-4">
+/* Headings */
+.card h2 {
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: #6c63ff;
+}
 
-        <h2 class="text-success mb-3">
-            🎉 You made an order!
-        </h2>
+/* Subheadings */
+.card h4 {
+    font-weight: 600;
+    margin-bottom: 15px;
+}
 
+/* Divider */
+.card hr {
+    border-top: 1px solid #ddd;
+    margin: 20px 0;
+}
+
+/* Item container */
+.item-card {
+    display: flex;
+    align-items: center;
+    background-color: var(--bs-gray-100); /* slightly darker for visibility in light mode */
+    padding: 15px 20px;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* subtle shadow */
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.item-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+/* Item text */
+.item-card h5,
+.item-card p,
+.item-card strong {
+    color: #212529; /* force dark text in light mode */
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+    .item-card {
+        background-color: #2c2c2c;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .item-card h5,
+    .item-card>div>p,
+    .item-card>div>strong {
+        color: #eee; /* light text in dark mode */
+    }
+}
+/* Item image */
+.item-card img {
+    width: 120px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-right: 20px;
+}
+
+/* Item details */
+.item-card h5 {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+.item-card p {
+    margin: 2px 0;
+    font-size: 15px;
+    color: var(--bs-body-color);
+}
+.item-card strong {
+    font-weight: 600;
+    color: var(--bs-body-color);
+}
+
+/* Grand Total */
+.grand-total {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #28a745;
+    text-align: right;
+    margin-top: 20px;
+}
+
+/* Proceed button */
+.btn-proceed {
+    display: inline-block;
+    font-size: 16px;
+    padding: 12px 28px;
+    border-radius: 12px;
+    background-color: #6c63ff;
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.2s;
+}
+.btn-proceed:hover {
+    background-color: #574fd6;
+    transform: translateY(-2px);
+}
+
+/* Light/Dark adaptive text */
+.card p, .card p>strong, .card h4 {
+    color: var(--bs-body-color);
+}
+</style>
+
+<div class="container">
+    <div class="card">
+        <h2 class="text-center">🎉 Order Confirmed!</h2>
         <hr>
-
         <p><strong>Order ID:</strong> {{ order.order_id }}</p>
-        <p><strong>Order Date:</strong> {{ order.created_at }}</p>
+        <p><strong>Order Date:</strong> {{ order.created_at|date:"d M Y, H:i" }}</p>
 
         <hr>
-
         <h4>Items Ordered</h4>
 
         {% for item in thing %}
-        <div class="d-flex align-items-center mb-3">
-
-            {% if item.foodpic %}
-            <img src="{{ item.foodpic.url }}" width="120"
-                 style="border-radius:8px;margin-right:20px;">
+        <div class="item-card">
+            {% if item.food_img %}
+            <img src="{{ item.food_img.url }}" alt="{{ item.food_name }}">
             {% endif %}
-
             <div>
                 <h5>{{ item.food_name }}</h5>
                 <p>₹ {{ item.price }} × {{ item.quantity }}</p>
                 <strong>Total: ₹ {{ item.get_total }}</strong>
             </div>
-
         </div>
         {% endfor %}
 
         <hr>
-
-        <h3 class="text-end text-success">
-            Grand Total: ₹ {{ order.total_price }}
-        </h3>
+        <div class="grand-total">Grand Total: ₹ {{ order.total_price }}</div>
 
         <div class="text-end mt-4">
-            <button class="btn btn-lg btn-primary">
+            <a href="{% url 'payment_options' order.id %}" class="btn-proceed">
                 Proceed to Payment 💳
-            </button>
+            </a>
         </div>
-
     </div>
-
 </div>
-
 {% endblock %}
