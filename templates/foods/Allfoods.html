@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    .food-card {
+        border-radius: 14px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        height: 100%;
+    }
+
+    .food-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    }
+
+    .food-img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+
+    .food-name {
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin-top: 10px;
+        color: #000;
+        text-decoration: none;
+    }
+
+    .food-name:hover {
+        text-decoration: none;
+        color: #28a745;
+    }
+
+    .price-text {
+        color: #28a745;
+        font-weight: 600;
+    }
+
+    .rating-text {
+        font-size: 0.9rem;
+        color: #555;
+    }
+
+    .breadcrumb-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="jumbotron">
+
+        <!-- BREADCRUMB + ADD FOOD -->
+        <div class="breadcrumb-container mb-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'Allfoods' %}">All Foods</a>
+                    </li>
+                    <li class="breadcrumb-item"><a href="{% url 'category_foods' 'BREAKFAST' %}">Breakfast</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'category_foods' 'BIRIYANI' %}">Biriyani</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'category_foods' 'PIZZA' %}">Pizza</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'category_foods' 'BURGER' %}">Burger</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'category_foods' 'DESSARTS' %}">Desserts</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'category_foods' 'BREVERAGES' %}">Beverages</a></li>
+                </ol>
+            </nav>
+
+            {% if user.is_authenticated and user.userdetails.user_type == "VENDOR" %}
+                <a href="{% url 'addfood' %}" class="btn btn-primary">
+                    Add Food <i class="bi bi-plus-circle"></i>
+                </a>
+            {% endif %}
+        </div>
+
+        <h2 class="mb-4">All Foods</h2>
+
+        <!-- FOOD GRID -->
+        <div class="row">
+            {% for food in allfood %}
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="card food-card p-3">
+
+                    {% if food.foodpic %}
+                        <img src="{{ food.foodpic.url }}" class="food-img" alt="{{ food.name }}">
+                    {% else %}
+                        <img src="{% static 'css/images/default.png' %}" class="food-img" alt="food">
+                    {% endif %}
+
+                    <a href="{% url 'foodDetail' food.id %}" class="food-name">
+                        {{ food.name }}
+                    </a>
+
+                    <p class="price-text mb-1">₹ {{ food.price }}</p>
+                    <p class="rating-text mb-0">⭐ {{ food.rating }}</p>
+
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    No food items available.
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

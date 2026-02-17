@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    /* CARD STYLING */
+    .food-card {
+        border-radius: 16px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        padding: 20px;
+    }
+
+    .food-image {
+        width: 100%;
+        height: 320px;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+
+    /* PRICE & RATING */
+    .price-text {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #28a745;
+        margin-bottom: 15px;
+    }
+
+    .rating-pill {
+        background: #ffc107;
+        color: #000;
+        font-weight: 600;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+    }
+
+    /* BUTTONS */
+    .action-buttons {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+
+    .action-buttons .btn {
+        min-width: 140px;
+        font-size: 1rem;
+    }
+
+    /* TEXT */
+    .food-description {
+        color: #555;
+        margin-top: 10px;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+
+        <!-- IMAGE -->
+        <div class="col-md-5 mb-4">
+            <div class="food-card text-center">
+                {% if fooditems.foodpic %}
+                    <img src="{{ fooditems.foodpic.url }}" alt="{{ fooditems.name }}" class="food-image">
+                {% else %}
+                    <img src="{% static 'css/images/default.png' %}" alt="Food image" class="food-image">
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- DETAILS -->
+        <div class="col-md-7 mb-4">
+            <div class="food-card">
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="mb-0">{{ fooditems.name }}</h2>
+                    <span class="rating-pill">⭐ {{ fooditems.rating }}</span>
+                </div>
+
+                <p class="price-text">₹ {{ fooditems.price }}</p>
+
+                <p class="food-description">
+                    Deliciously prepared and served fresh. Perfect choice for your cravings.
+                </p>
+
+                <!-- ACTION BUTTONS -->
+                <div class="action-buttons">
+                    <form method="POST" action="{% url 'add_cart' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="food_id" value="{{ fooditems.id }}">
+                        <button type="submit" class="btn btn-success btn-lg">🛒 Add to Cart</button>
+                    </form>
+
+                    <a href="{% url 'customize' fooditems.id %}" class="btn btn-outline-warning btn-lg">✏ Customize</a>
+
+                    <a href="{% url 'Allfoods' %}" class="btn btn-outline-secondary btn-lg">← Back</a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

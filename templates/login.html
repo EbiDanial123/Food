@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    body {
+        background: url("{% static 'images/back.jpg' %}") no-repeat center center fixed;
+        background-size: cover;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .login-card {
+        max-width: 400px;
+        margin: 100px auto;
+        padding: 40px 30px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.15); /* glass effect */
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        color: #fff;
+    }
+
+    .login-card h1 {
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 30px;
+        font-weight: 700;
+        color: #fff;
+        text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+    }
+
+    .login-card label {
+        font-weight: 600;
+        display: block;
+        margin-bottom: 6px;
+        color: #f0f0f0;
+    }
+
+    .login-card input[type="text"],
+    .login-card input[type="password"] {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        border: none;
+        outline: none;
+        background: rgba(255, 255, 255, 0.25);
+        color: #fff;
+        font-size: 1rem;
+        backdrop-filter: blur(5px);
+    }
+
+    .login-card input::placeholder {
+        color: rgba(45, 41, 41, 0.7);
+    }
+
+    .login-card input[type="submit"] {
+        width: 100%;
+        padding: 12px;
+        font-size: 1.1rem;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.25);
+        color: #fff;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+    }
+
+    .login-card input[type="submit"]:hover {
+        background: rgba(6, 4, 4, 0.4);
+    }
+</style>
+
+<div class="container">
+    <div class="login-card">
+        <h1>Login</h1>
+
+        <form action="" method="POST">
+            {% csrf_token %}
+            
+            <label for="username">Username</label>
+            <input type="text" name="username" placeholder="Enter Username" required>
+
+            <label for="password">Password</label>
+            <input type="password" name="password" placeholder="Enter Password" required>
+
+            <input type="submit" value="Login">
+        </form>
+    </div>
+</div>
+
+{% endblock %}

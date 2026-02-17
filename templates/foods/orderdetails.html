@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="card shadow p-4">
+
+        <h2 class="text-success mb-3">
+            🎉 You made an order!
+        </h2>
+
+        <hr>
+
+        <p><strong>Order ID:</strong> {{ order.order_id }}</p>
+        <p><strong>Order Date:</strong> {{ order.created_at }}</p>
+
+        <hr>
+
+        <h4>Items Ordered</h4>
+
+        {% for item in thing %}
+        <div class="d-flex align-items-center mb-3">
+
+            {% if item.foodpic %}
+            <img src="{{ item.foodpic.url }}" width="120"
+                 style="border-radius:8px;margin-right:20px;">
+            {% endif %}
+
+            <div>
+                <h5>{{ item.food_name }}</h5>
+                <p>₹ {{ item.price }} × {{ item.quantity }}</p>
+                <strong>Total: ₹ {{ item.get_total }}</strong>
+            </div>
+
+        </div>
+        {% endfor %}
+
+        <hr>
+
+        <h3 class="text-end text-success">
+            Grand Total: ₹ {{ order.total_price }}
+        </h3>
+
+        <div class="text-end mt-4">
+            <button class="btn btn-lg btn-primary">
+                Proceed to Payment 💳
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

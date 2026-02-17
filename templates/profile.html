@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    .profile-card {
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    }
+
+    .profile-img {
+        width: 180px;
+        height: 180px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 4px solid #f1f1f1;
+    }
+
+    .profile-label {
+        font-weight: 600;
+        color: #555;
+    }
+
+    .profile-value {
+        color: #000;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="jumbotron">
+
+        <h2 class="mb-4 text-center">
+            {{ user.username }}'s Profile
+        </h2>
+
+        <div class="card profile-card p-4">
+            <div class="row align-items-center">
+
+                <!-- LEFT: PROFILE IMAGE -->
+                <div class="col-md-4 text-center mb-4 mb-md-0">
+                    {% if user.userdetails.userpic %}
+                        <img src="{{ user.userdetails.userpic.url }}"
+                             alt="Profile picture"
+                             class="profile-img">
+                    {% else %}
+                        <img src="{% static 'css/images/default.png' %}"
+                             alt="Profile picture"
+                             class="profile-img">
+                    {% endif %}
+                </div>
+
+                <!-- RIGHT: USER DETAILS -->
+                <div class="col-md-8">
+                    <div class="row mb-2">
+                        <div class="col-sm-4 profile-label">Email</div>
+                        <div class="col-sm-8 profile-value">{{ user.email }}</div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <div class="col-sm-4 profile-label">Phone</div>
+                        <div class="col-sm-8 profile-value">{{ user.userdetails.phone }}</div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <div class="col-sm-4 profile-label">Address</div>
+                        <div class="col-sm-8 profile-value">{{ user.userdetails.address }}</div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <div class="col-sm-4 profile-label">Street</div>
+                        <div class="col-sm-8 profile-value">{{ user.userdetails.street }}</div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <div class="col-sm-4 profile-label">City</div>
+                        <div class="col-sm-8 profile-value">{{ user.userdetails.city }}</div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-sm-4 profile-label">Zip Code</div>
+                        <div class="col-sm-8 profile-value">{{ user.userdetails.zip }}</div>
+                    </div>
+
+                    <a href="{% url 'update' %}" class="btn btn-primary">
+                        Update Profile <i class="bi bi-pencil-square"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

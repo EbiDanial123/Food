@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+
+<style>
+    body {
+        background: url("{% static 'images/register.jpg' %}") no-repeat center center fixed;
+        background-size: cover;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .glass-card {
+        max-width: 900px;
+        margin: 60px auto;
+        padding: 40px 50px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        color: #fff;
+    }
+
+    .glass-card h1 {
+        text-align: center;
+        font-weight: 700;
+        margin-bottom: 25px;
+        color: #fff;
+        text-shadow: 1px 1px 6px rgba(0,0,0,0.3);
+    }
+
+    .glass-card label {
+        color: #f1f1f1;
+        font-weight: 600;
+    }
+
+    .glass-card input,
+    .glass-card select,
+    .glass-card textarea {
+        background: rgba(255, 255, 255, 0.25) !important;
+        border: none !important;
+        color: #fff !important;
+        border-radius: 10px;
+    }
+
+    .glass-card input::placeholder {
+        color: rgba(255,255,255,0.7);
+    }
+
+    .glass-card select option {
+        color: #000;
+    }
+
+    .glass-card input[type="submit"] {
+        width: 100%;
+        padding: 12px;
+        font-size: 1.1rem;
+        border-radius: 12px;
+        border: none;
+        background: rgba(255,255,255,0.3);
+        color: #fff;
+        font-weight: 600;
+        transition: 0.3s ease;
+    }
+
+    .glass-card input[type="submit"]:hover {
+        background: rgba(255,255,255,0.45);
+    }
+
+    .success-box {
+        text-align: center;
+        padding: 40px;
+    }
+
+    .success-box a {
+        color: #00ffcc;
+        font-weight: 600;
+        text-decoration: none;
+    }
+</style>
+
+<div class="container">
+
+    <div class="glass-card">
+
+        {% if registered %}
+            <div class="success-box">
+                <h1>🎉 Registration Successful</h1>
+                <p>Proceed to <a href="{% url 'login' %}">Login</a></p>
+            </div>
+        {% else %}
+
+        <h1>Registration Form</h1>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form1.username|as_crispy_field }}
+                </div>
+                <div class="col-md-6">
+                    {{ form1.email|as_crispy_field }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form1.password|as_crispy_field }}
+                </div>
+                <div class="col-md-6">
+                    {{ form2.phone|as_crispy_field }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form2.address|as_crispy_field }}
+                </div>
+                <div class="col-md-6">
+                    {{ form2.street|as_crispy_field }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form2.city|as_crispy_field }}
+                </div>
+                <div class="col-md-6">
+                    {{ form2.zip|as_crispy_field }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form2.userpic|as_crispy_field }}
+                </div>
+                <div class="col-md-6">
+                    {{ form2.user_type|as_crispy_field }}
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                {{ form2.captcha }}
+            </div>
+
+            <br>
+            <input type="submit" value="REGISTER">
+        </form>
+
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock %}

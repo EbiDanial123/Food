@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h4>Edit Cart Item</h4>
+        </div>
+
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+
+                <!-- Food Name (readonly) -->
+                <div class="mb-3">
+                    <label>Food Name</label>
+                    <input type="text" class="form-control"
+                           value="{{ item.name }}" readonly>
+                </div>
+
+                <!-- Price (readonly) -->
+                <div class="mb-3">
+                    <label>Price</label>
+                    <input type="text" class="form-control"
+                           value="{{ item.price }}" readonly>
+                </div>
+
+                <!-- Rating (readonly) -->
+                <div class="mb-3">
+                    <label>Rating</label>
+                    <input type="text" class="form-control"
+                           value="{{ item.rating }}" readonly>
+                </div>
+
+                <!-- Quantity (editable) -->
+                <div class="mb-3">
+                    <label>Quantity</label>
+                    <input type="number" name="quantity"
+                           class="form-control"
+                           value="{{ item.quantity }}" min="1">
+                </div>
+
+                <button type="submit" class="btn btn-success">
+                    Update Cart
+                </button>
+                <a href="{% url 'add_cart' %}" class="btn btn-secondary">
+                    Cancel
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

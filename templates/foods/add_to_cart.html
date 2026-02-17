@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    .cart-items-scroll {
+        max-height: 420px; 
+        overflow-y: auto;
+        padding-right: 10px;
+    }
+
+    /* Custom scrollbar */
+    .cart-items-scroll::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .cart-items-scroll::-webkit-scrollbar-thumb {
+        background-color: #c1c1c1;
+        border-radius: 10px;
+    }
+
+    .cart-card {
+        border-radius: 12px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .cart-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .cart-actions a,
+    .cart-actions button {
+        width: 80px;
+    }
+
+    .cart-total {
+        font-size: 1.3rem;
+        font-weight: 600;
+    }
+
+</style>
+
+<div class="container mt-4">
+    <div class="jumbotron">
+
+        <h1 class="mb-3">Items in Cart <i class="bi bi-cart-check"></i></h1>
+        <hr>
+
+        <!-- SCROLLABLE CART ITEMS -->
+        <div class="cart-items-scroll">
+            {% for item in addfood %}
+            <div class="card mb-3 cart-card p-2">
+                <div class="d-flex align-items-center">
+
+                    <!-- Image -->
+                    <div style="flex-shrink:0; margin-right:20px;">
+                        {% if item.food_img %}
+                            <img src="{{ item.food_img.url }}"
+                                 alt="{{ item.name }}"
+                                 style="width:150px;height:100px;object-fit:cover;border-radius:5px;">
+                        {% else %}
+                            <img src="{% static 'images/default.jpg' %}"
+                                 alt="default"
+                                 style="width:150px;height:100px;object-fit:cover;border-radius:5px;">
+                        {% endif %}
+                    </div>
+
+                    <!-- Details -->
+                    <div style="flex-grow:1;">
+                        <h5 class="mb-1">{{ item.name }}</h5>
+                        <p class="mb-1"><strong>Price:</strong> ₹ {{ item.price }}</p>
+                        <p class="mb-1 text-muted">Rating: {{ item.rating }}</p>
+                        <p class="mb-1"><strong>Quantity:</strong> {{ item.quantity }}</p>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="d-flex flex-column align-items-end cart-actions">
+                        <a href="{% url 'edit_cart' item.id %}" class="btn btn-warning btn-sm mb-2">
+                            Edit <i class="bi bi-pencil"></i>
+                        </a>
+                        <form method="post" action="{% url 'delete_cart' item.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Remove this item from cart?')">
+                                Delete <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+            {% empty %}
+            <div class="alert alert-info text-center">
+                Your cart is empty.
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- TOTAL & ACTIONS -->
+        <hr>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="cart-total">Total Amount</h4>
+            <h4 class="cart-total text-success">₹ {{ total_price }}</h4>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center">
+    <a href="{% url 'Allfoods' %}" class="btn btn-primary">
+        Continue Shopping
+    </a>
+
+    {% if addfood %}
+    <form method="post" action="{% url 'place_order' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success btn-lg">
+            Place Order <i class="bi bi-bag-check"></i>
+        </button>
+    </form>
+    {% endif %}
+</div>
+
+
+    </div>
+</div>
+
+{% endblock %}

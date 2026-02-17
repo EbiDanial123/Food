@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    .food-card {
+        border-radius: 14px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .food-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    }
+
+    .food-img {
+        height: 150px;
+        object-fit: cover;
+        border-top-left-radius: 14px;
+        border-top-right-radius: 14px;
+    }
+
+    .breadcrumb-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+</style>
+
+<div class="container mt-4">
+
+    <!-- BREADCRUMB + BACK -->
+    <div class="breadcrumb-container mb-3">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a href="{% url 'Allfoods' %}">All Foods</a>
+                </li>
+                <li class="breadcrumb-item"><a href="{% url 'category_foods' 'BREAKFAST' %}">Breakfast</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'category_foods' 'BIRIYANI' %}">Biriyani</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'category_foods' 'PIZZA' %}">Pizza</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'category_foods' 'BURGER' %}">Burger</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'category_foods' 'DESSARTS' %}">Desserts</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'category_foods' 'BREVERAGES' %}">Beverages</a></li>
+            </ol>
+        </nav>
+
+        <a href="{% url 'Allfoods' %}" class="btn btn-outline-primary btn-sm">
+            ← Back
+        </a>
+    </div>
+
+    <!-- CATEGORY TITLE -->
+    <h3 class="mb-4 text-capitalize fw-bold">
+        {{ category }} Foods
+    </h3>
+
+    <!-- FOOD CARDS -->
+    <div class="row g-4">
+        {% for food in foods %}
+            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+                <div class="card food-card h-100">
+
+                    {% if food.foodpic %}
+                        <img src="{{ food.foodpic.url }}" class="card-img-top food-img">
+                    {% else %}
+                        <img src="{% static 'css/images/default.png' %}" class="card-img-top food-img">
+                    {% endif %}
+
+                    <div class="card-body text-center">
+                        <h6 class="fw-semibold mb-1">{{ food.name }}</h6>
+                        <p class="mb-1 text-success fw-bold">₹{{ food.price }}</p>
+                        <p class="mb-2 text-muted">⭐ {{ food.rating }}</p>
+
+                        <a href="{% url 'add_cart' %}?food_id={{ food.id }}"
+                           class="btn btn-success btn-sm w-100 mb-2">
+                            Add to Cart
+                        </a>
+
+                        <a href="{% url 'customize' food.id %}"
+                           class="btn btn-warning btn-sm w-100">
+                            Customize
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}

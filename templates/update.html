@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    body {
+        background: url("{% static 'images/update.jpg' %}") no-repeat center center fixed;
+        background-size: cover;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .glass-card {
+        max-width: 700px;
+        margin: 70px auto;
+        padding: 40px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        color: #fff;
+    }
+
+    .glass-card h1 {
+        text-align: center;
+        margin-bottom: 30px;
+        font-weight: 700;
+        color: #fff;
+        text-shadow: 1px 1px 6px rgba(0,0,0,0.3);
+    }
+
+    .glass-card label {
+        color: #f1f1f1;
+        font-weight: 600;
+    }
+
+    .glass-card input,
+    .glass-card textarea,
+    .glass-card select {
+        background: rgba(255, 255, 255, 0.25) !important;
+        border: none !important;
+        border-radius: 10px;
+        color: #fff !important;
+        padding: 10px;
+    }
+
+    .glass-card input::placeholder {
+        color: rgba(255,255,255,0.7);
+    }
+
+    .glass-card select option {
+        color: #000;
+    }
+
+    .glass-card input[type="submit"] {
+        width: 100%;
+        padding: 12px;
+        font-size: 1.1rem;
+        border-radius: 12px;
+        border: none;
+        margin-top: 20px;
+        background: rgba(255,255,255,0.3);
+        color: #fff;
+        font-weight: 600;
+        transition: 0.3s ease;
+    }
+
+    .glass-card input[type="submit"]:hover {
+        background: rgba(255,255,255,0.45);
+    }
+</style>
+
+<div class="container">
+
+    <div class="glass-card">
+        <h1>Update Profile</h1>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+            {{ form1.as_p }}
+
+            <input type="submit" value="UPDATE">
+        </form>
+    </div>
+
+</div>
+
+{% endblock %}
