@@ -3,7 +3,7 @@ from learnapp import views
 
 
 urlpatterns = [
-    path('',views.registration,name="registration"),
+    path('',views.index,name="index"),
     path('login',views.user_login,name="login"),
     path('home',views.home,name="home"),
     path('logout',views.user_logout,name="logout"),

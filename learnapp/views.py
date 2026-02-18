@@ -9,7 +9,7 @@ from django.contrib import messages
                
 # Create your views here.
 
-def registration(request):
+def index(request):
     registered = False
     if request.method == 'POST':
         form1 = UserForm(request.POST)
@@ -31,7 +31,7 @@ def registration(request):
         'form2':form2,
         'registered' : registered
     }
-    return render(request,'registration.html',context)
+    return render(request,'index.html',context)
 
 def user_login(request):
 
