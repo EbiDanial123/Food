@@ -22,12 +22,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2e7563b (push)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
+<<<<<<< HEAD
+=======
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['.onrender.com','127.0.0.1','[IP_ADDRESS]','localhost']
+>>>>>>> 2e7563b (push)
+
 
 
 
@@ -141,8 +149,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 # Media Config
@@ -160,11 +175,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 # }
 
 
-EMAIL_BACKEND='django.code.mail.backends.amtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 EMAIL_HOST='smtp.gmail.com'#replace with your email host
 EMAIL_PORT=587 #587 for TLS or 465 for ssl
 EMAIL_USE_TLS=True#set to False if using ssl on port 465
 EMAIL_HOST_USER='daniel12ebi@gmail.com'
 EMAIL_HOST_PASSWORD=''# use an app password not your main
-DEFALUT_FROM_EMAIL=EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL=EMAIL_HOST_USER
 
