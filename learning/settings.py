@@ -20,8 +20,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
-# SECRET_KEY = os.environ.get('SECRET_KEY')
-# DEBUG = os.environ.get("DEBUG", "False") == "True"
+SECRET_KEY = os.environ.get('SECRET_KEY')
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 # ALLOWED_HOSTS = ['.onrender.com','127.0.0.1','[IP_ADDRESS]','localhost']
 
 # ALLOWED_HOSTS = ['.onrender.com','127.0.0.1','[IP_ADDRESS]','localhost']
