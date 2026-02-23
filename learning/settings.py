@@ -32,7 +32,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ALLOWED_HOSTS = ['.onrender.com','127.0.0.1','[IP_ADDRESS]','localhost']
 # ALLOWED_HOSTS = ['*']
 
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY", "temporary-fallback-key")
 ALLOWED_HOSTS = ['.onrender.com', '127.0.0.1', 'localhost']
 RECAPTCHA_PUBLIC_KEY = os.environ.get("RECAPTCHA_PUBLIC_KEY")
 RECAPTCHA_PRIVATE_KEY = os.environ.get("RECAPTCHA_PRIVATE_KEY")
