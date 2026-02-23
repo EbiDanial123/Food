@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 from pathlib import Path
 import os
 
+from dotenv import load_dotenv
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,15 +23,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
+<<<<<<< HEAD
 SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = os.environ.get("DEBUG", "False") == "True"
+=======
+# SECRET_KEY = 'django-insecure-4x9!8abctemporary-dev-key'
+# DEBUG = os.environ.get("DEBUG", "False") == "True"
+>>>>>>> eb3fa16 (Configured environment variables and recaptcha)
 # ALLOWED_HOSTS = ['.onrender.com','127.0.0.1','[IP_ADDRESS]','localhost']
 
 # ALLOWED_HOSTS = ['.onrender.com','127.0.0.1','[IP_ADDRESS]','localhost']
 # ALLOWED_HOSTS = ['*']
 
-
+SECRET_KEY = os.environ.get("SECRET_KEY")
 ALLOWED_HOSTS = ['.onrender.com', '127.0.0.1', 'localhost']
+RECAPTCHA_PUBLIC_KEY = os.environ.get("RECAPTCHA_PUBLIC_KEY")
+RECAPTCHA_PRIVATE_KEY = os.environ.get("RECAPTCHA_PRIVATE_KEY")
 
 # Application definition
 
@@ -50,9 +60,11 @@ CRISPY_TEMPLATE_PACK = 'bootstrap5'
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
 
 # recaptcha keys
+# RECAPTCHA_DEFAULT_ACTION = "generic"
+# RECAPTCHA_SCORE_THRESHOLD = 0.5
 
-RECAPTCHA_PUBLIC_KEY = '6LfjNnEsAAAAAOxK99EHCcK7HBrKVlwZFVCDJW-K'
-RECAPTCHA_PRIVATE_KEY = '6LfjNnEsAAAAACNRKHtjBhfOD9mgXrjGD4nFkAJS'
+# RECAPTCHA_PUBLIC_KEY = '6LeQ63QsAAAAABJ88cld1qSu4PbWtLJwtrxQaeLH'
+# RECAPTCHA_PRIVATE_KEY = '6LeQ63QsAAAAAG-xY-kw8rhUHV44aaz3MkZmlzh2'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
